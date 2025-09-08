@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Plus, Edit, Trash2, BarChart3, Package, Bell, Search, TrendingUp } from 'lucide-react';
 import { Button } from '../common/Button';
 import { Card } from '../common/Card';
@@ -21,12 +21,15 @@ export const AdminDashboard: React.FC = () => {
   const versions = useVersionStore((state) => state.getVersionHistory());
   const statistics = useOrderStore((state) => state.getStatistics());
   
-  // 採用統計データ
-  const {
-    getTopProducts,
-    getCategoryStats,
-    getMonthlyStats
-  } = useStatisticsStore();
+  // 採用統計データを直接取得
+  const getTopProducts = useStatisticsStore((state) => state.getTopProducts);
+  const getCategoryStats = useStatisticsStore((state) => state.getCategoryStats);
+  const getMonthlyStats = useStatisticsStore((state) => state.getMonthlyStats);
+  
+  // 統計データをメモ化
+  const topProducts = useMemo(() => getTopProducts(10), []);
+  const categoryStats = useMemo(() => getCategoryStats(), []);
+  const monthlyStats = useMemo(() => getMonthlyStats(), []);
   
   const {
     exteriorProducts,
@@ -44,7 +47,7 @@ export const AdminDashboard: React.FC = () => {
   } = useProductStore();
   
   // カテゴリに応じた商品リストを取得
-  const getProductsByCategory = () => {
+  const productsByCategory = useMemo(() => {
     switch (productCategory) {
       case 'exterior':
         return exteriorProducts;
@@ -55,14 +58,16 @@ export const AdminDashboard: React.FC = () => {
       default:
         return [];
     }
-  };
+  }, [productCategory, exteriorProducts, interiorProducts, waterProducts]);
   
   // 検索フィルタリング
-  const filteredProducts = getProductsByCategory().filter(product =>
-    product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    product.manufacturer.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    product.categoryName.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredProducts = useMemo(() => {
+    return productsByCategory.filter(product =>
+      product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.manufacturer.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.categoryName.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [productsByCategory, searchTerm]);
   
   // 商品の保存処理
   const handleSaveProduct = (productData: Partial<Product>) => {
@@ -489,14 +494,14 @@ export const AdminDashboard: React.FC = () => {
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
-                    {getTopProducts(10).length === 0 ? (
+                    {topProducts.length === 0 ? (
                       <tr>
                         <td colSpan={5} className="px-6 py-8 text-center text-gray-500">
                           まだ採用データがありません
                         </td>
                       </tr>
                     ) : (
-                      getTopProducts(10).map((product, index) => (
+                      topProducts.map((product, index) => (
                         <tr key={product.productId}>
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                             {index + 1}位
@@ -523,7 +528,7 @@ export const AdminDashboard: React.FC = () => {
             
             {/* カテゴリ別統計 */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-              {getCategoryStats().map((stat) => (
+              {categoryStats.map((stat) => (
                 <Card key={stat.category} className="p-6">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-lg font-semibold text-gray-900">{stat.category}</h3>
@@ -543,12 +548,12 @@ export const AdminDashboard: React.FC = () => {
             <Card className="p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">月別採用推移</h3>
               <div className="h-64 flex items-end justify-between gap-2">
-                {getMonthlyStats().map((data) => (
+                {monthlyStats.map((data) => (
                   <div key={data.month} className="flex-1 flex flex-col items-center">
                     <div
                       className="w-full bg-green-500 rounded-t"
                       style={{
-                        height: `${data.count > 0 ? (data.count / Math.max(...getMonthlyStats().map(d => d.count), 1)) * 100 : 0}%`
+                        height: `${data.count > 0 ? (data.count / Math.max(...monthlyStats.map(d => d.count), 1)) * 100 : 0}%`
                       }}
                     />
                     <span className="text-xs text-gray-600 mt-2">{data.month}月</span>

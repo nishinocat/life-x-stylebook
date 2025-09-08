@@ -25,19 +25,7 @@ function App() {
   };
 
   if (showAdmin) {
-    return (
-      <div>
-        <div className="bg-white border-b border-gray-200 px-6 py-3">
-          <button
-            onClick={() => setShowAdmin(false)}
-            className="text-blue-600 hover:text-blue-700 text-sm font-medium"
-          >
-            ← カタログに戻る
-          </button>
-        </div>
-        <AdminDashboard />
-      </div>
-    );
+    return <AdminDashboard />;
   }
 
   return (

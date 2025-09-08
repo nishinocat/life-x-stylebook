@@ -155,9 +155,7 @@ export const Header: React.FC<HeaderProps> = ({
             {/* 管理者ボタン */}
             {isAdmin && (
               <button
-                onClick={() => {
-                  if (onAdminClick) onAdminClick();
-                }}
+                onClick={onAdminClick}
                 className="flex items-center gap-1 px-2 sm:px-3 py-1 sm:py-1.5 text-xs text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded transition-colors"
               >
                 <Settings className="w-3 h-3" />
