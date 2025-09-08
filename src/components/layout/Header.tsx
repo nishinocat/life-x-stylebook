@@ -134,11 +134,18 @@ export const Header: React.FC<HeaderProps> = ({
           {/* 管理者ボタン */}
           {isAdmin && (
             <button
-              onClick={onAdminClick}
+              onClick={() => {
+                console.log('Maintenance button clicked in Header');
+                if (onAdminClick) {
+                  onAdminClick();
+                } else {
+                  console.log('onAdminClick is not defined');
+                }
+              }}
               className="flex items-center gap-1 px-3 py-1.5 text-xs text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded transition-colors"
             >
               <Settings className="w-3 h-3" />
-              メンテナンス
+              アイテムのメンテナンス
             </button>
           )}
         </div>

@@ -14,6 +14,8 @@ function App() {
   const [showAdmin, setShowAdmin] = useState(false);
   const [isAdmin] = useState(true); // デモ用に管理者モードを有効化
   
+  console.log('App state - showAdmin:', showAdmin);
+  
   const currentVersion = useVersionStore((state) => state.currentVersion);
   const items = useCartStore((state) => state.items);
   
@@ -47,7 +49,10 @@ function App() {
         activeTab={activeTab}
         onTabChange={setActiveTab}
         isAdmin={isAdmin}
-        onAdminClick={() => setShowAdmin(true)}
+        onAdminClick={() => {
+          console.log('Admin button clicked');
+          setShowAdmin(true);
+        }}
       />
       
       <main className="flex-1 overflow-hidden">
