@@ -19,24 +19,30 @@ export const AdminDashboard: React.FC = () => {
   
   const currentVersion = useVersionStore((state) => state.currentVersion);
   const versions = useVersionStore((state) => state.versionHistory);
-  const statistics = useOrderStore((state) => ({
-    totalConfirmedOrders: state.confirmedOrders.length,
-    yearlyTotal: state.confirmedOrders.reduce((sum, order) => sum + order.totalAmount, 0),
-    averageOrderValue: state.confirmedOrders.length > 0 
-      ? state.confirmedOrders.reduce((sum, order) => sum + order.totalAmount, 0) / state.confirmedOrders.length 
-      : 0,
-    monthlyData: Array.from({ length: 12 }, (_, i) => {
-      const month = i + 1;
-      const monthOrders = state.confirmedOrders.filter(order => 
-        new Date(order.confirmedAt).getMonth() === i
-      );
-      return {
-        month,
-        count: monthOrders.length,
-        total: monthOrders.reduce((sum, order) => sum + order.totalAmount, 0)
-      };
-    })
-  }));
+  const statistics = useOrderStore((state) => {
+    const confirmedOrders = state.orders.filter(o => 
+      o.status === 'confirmed' || o.status === 'modified' || o.status === 'completed'
+    );
+    
+    return {
+      totalConfirmedOrders: confirmedOrders.length,
+      yearlyTotal: confirmedOrders.reduce((sum, order) => sum + order.totalAmount, 0),
+      averageOrderValue: confirmedOrders.length > 0 
+        ? confirmedOrders.reduce((sum, order) => sum + order.totalAmount, 0) / confirmedOrders.length 
+        : 0,
+      monthlyData: Array.from({ length: 12 }, (_, i) => {
+        const month = i + 1;
+        const monthOrders = confirmedOrders.filter(order => 
+          order.confirmedAt && new Date(order.confirmedAt).getMonth() === i
+        );
+        return {
+          month,
+          count: monthOrders.length,
+          total: monthOrders.reduce((sum, order) => sum + order.totalAmount, 0)
+        };
+      })
+    };
+  });
   
   // 採用統計データを直接取得（セレクターを使用）
   const topProducts = useStatisticsStore((state) => 
