@@ -1,16 +1,18 @@
 export type PlanType = 'LACIE' | 'HOURS';
-export type UnitType = '㎡' | '個' | '一式';
+export type UnitType = '㎡' | '個' | '一式' | 'sqm' | 'piece' | 'set';
 
 export interface ProductVariant {
   id: string;
   color: string;
   colorCode?: string;
-  imageUrl: string;
+  imageUrl?: string;
   thumbnailUrl?: string;
+  images?: string[];
 }
 
 export interface PricingInfo {
-  planId: PlanType;
+  planId?: PlanType;
+  plan?: PlanType;
   price: number;
 }
 
