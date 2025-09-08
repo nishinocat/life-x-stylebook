@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Header } from './components/layout/Header';
-import { CatalogView } from './components/catalog/CatalogView';
+import { AllCatalogView } from './components/catalog/AllCatalogView';
 import { CartSidebar } from './components/cart/CartSidebar';
 import { ConfirmOrderModal } from './components/catalog/ConfirmOrderModal';
 import { AdminDashboard } from './components/admin/AdminDashboard';
@@ -10,7 +10,6 @@ import { useCartStore } from './stores/useCartStore';
 function App() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<'exterior' | 'interior' | 'water'>('exterior');
   const [showAdmin, setShowAdmin] = useState(false);
   const [isAdmin] = useState(true); // デモ用に管理者モードを有効化
   
@@ -32,23 +31,12 @@ function App() {
     <div className="min-h-screen bg-gray-50 flex flex-col">
       <Header 
         onCartClick={() => setIsCartOpen(true)}
-        activeTab={activeTab}
-        onTabChange={setActiveTab}
         isAdmin={isAdmin}
         onAdminClick={() => setShowAdmin(true)}
       />
       
       <main className="flex-1 overflow-hidden">
-        {activeTab === 'exterior' && <CatalogView catalogType="exterior" />}
-        {activeTab === 'interior' && <CatalogView catalogType="interior" />}
-        {activeTab === 'water' && (
-          <div className="flex items-center justify-center h-full text-gray-500">
-            <div className="text-center">
-              <h2 className="text-2xl font-semibold mb-2">水廻りカタログ</h2>
-              <p>準備中です</p>
-            </div>
-          </div>
-        )}
+        <AllCatalogView />
       </main>
       
       {/* バージョン表示 */}

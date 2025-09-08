@@ -1,24 +1,18 @@
 import React, { useState } from 'react';
-import { ShoppingCart, User, Home, Droplets, Trees, Settings, Menu, X, Filter } from 'lucide-react';
+import { ShoppingCart, User, Settings, Menu, X } from 'lucide-react';
 import { useCartStore } from '../../stores/useCartStore';
 import { formatPrice } from '../../lib/utils';
 
 interface HeaderProps {
   onCartClick: () => void;
-  activeTab: 'exterior' | 'interior' | 'water';
-  onTabChange: (tab: 'exterior' | 'interior' | 'water') => void;
   isAdmin?: boolean;
   onAdminClick?: () => void;
-  onFilterClick?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({ 
   onCartClick, 
-  activeTab, 
-  onTabChange,
   isAdmin = false,
-  onAdminClick,
-  onFilterClick
+  onAdminClick
 }) => {
   const { items, getTotalPrice } = useCartStore();
   const totalPrice = getTotalPrice();
@@ -52,14 +46,6 @@ export const Header: React.FC<HeaderProps> = ({
             
             {/* 右側のアクション */}
             <div className="flex items-center gap-2">
-              {/* モバイル用フィルターボタン */}
-              <button
-                onClick={onFilterClick}
-                className="lg:hidden p-2 hover:bg-gray-50 rounded-lg"
-              >
-                <Filter className="w-5 h-5 text-gray-700" />
-              </button>
-              
               {/* カートボタン */}
               <button
                 onClick={onCartClick}
@@ -87,56 +73,10 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
         </div>
         
-        {/* タブナビゲーション */}
-        <nav className="px-4 sm:px-6 py-2 bg-gray-50 border-t border-gray-100">
-          <div className="flex items-center justify-between">
-            <ul className="flex gap-1 sm:gap-2">
-              <li>
-                <button
-                  onClick={() => onTabChange('exterior')}
-                  className={`flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium transition-all ${
-                    activeTab === 'exterior'
-                      ? 'bg-green-500 text-white'
-                      : 'text-gray-600 hover:bg-gray-200'
-                  }`}
-                >
-                  <Trees className="w-3 h-3 sm:w-4 sm:h-4" />
-                  <span className="hidden sm:inline">エクステリア</span>
-                  <span className="sm:hidden">外装</span>
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => onTabChange('interior')}
-                  className={`flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium transition-all ${
-                    activeTab === 'interior'
-                      ? 'bg-blue-500 text-white'
-                      : 'text-gray-600 hover:bg-gray-200'
-                  }`}
-                >
-                  <Home className="w-3 h-3 sm:w-4 sm:h-4" />
-                  <span className="hidden sm:inline">インテリア</span>
-                  <span className="sm:hidden">内装</span>
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => onTabChange('water')}
-                  className={`flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium transition-all ${
-                    activeTab === 'water'
-                      ? 'bg-cyan-500 text-white'
-                      : 'text-gray-600 hover:bg-gray-200'
-                  }`}
-                >
-                  <Droplets className="w-3 h-3 sm:w-4 sm:h-4" />
-                  <span className="hidden sm:inline">水廻り</span>
-                  <span className="sm:hidden">水廻</span>
-                </button>
-              </li>
-            </ul>
-            
-            {/* 管理者ボタン */}
-            {isAdmin && (
+        {/* 管理者ボタン */}
+        {isAdmin && (
+          <div className="px-4 sm:px-6 py-2 bg-gray-50 border-t border-gray-100">
+            <div className="flex justify-end">
               <button
                 onClick={onAdminClick}
                 className="flex items-center gap-1 px-2 sm:px-3 py-1 sm:py-1.5 text-xs text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded transition-colors"
@@ -145,9 +85,9 @@ export const Header: React.FC<HeaderProps> = ({
                 <span className="hidden sm:inline">アイテムのメンテナンス</span>
                 <span className="sm:hidden">管理</span>
               </button>
-            )}
+            </div>
           </div>
-        </nav>
+        )}
         
         {/* モバイル用プラン表示 */}
         <div className="md:hidden px-4 py-2 bg-white border-t border-gray-100">
@@ -169,39 +109,6 @@ export const Header: React.FC<HeaderProps> = ({
             </div>
             <nav className="p-4">
               <ul className="space-y-2">
-                <li>
-                  <button
-                    onClick={() => {
-                      onTabChange('exterior');
-                      setIsMobileMenuOpen(false);
-                    }}
-                    className="w-full text-left px-4 py-2 hover:bg-gray-100 rounded-lg"
-                  >
-                    エクステリア
-                  </button>
-                </li>
-                <li>
-                  <button
-                    onClick={() => {
-                      onTabChange('interior');
-                      setIsMobileMenuOpen(false);
-                    }}
-                    className="w-full text-left px-4 py-2 hover:bg-gray-100 rounded-lg"
-                  >
-                    インテリア
-                  </button>
-                </li>
-                <li>
-                  <button
-                    onClick={() => {
-                      onTabChange('water');
-                      setIsMobileMenuOpen(false);
-                    }}
-                    className="w-full text-left px-4 py-2 hover:bg-gray-100 rounded-lg"
-                  >
-                    水廻り
-                  </button>
-                </li>
                 {isAdmin && (
                   <li className="pt-4 border-t">
                     <button
