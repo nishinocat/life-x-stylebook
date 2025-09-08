@@ -34,37 +34,37 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onSelect }) =
         <img
           src={defaultVariant?.imageUrl || imagePlaceholder}
           alt={product.name}
-          className="w-full h-48 object-cover"
+          className="w-full h-32 sm:h-48 object-cover"
           onError={(e) => {
             e.currentTarget.src = imagePlaceholder;
           }}
         />
       </div>
       
-      <div className="p-4">
-        <div className="flex items-start justify-between mb-2">
-          <h3 className="text-sm font-semibold text-gray-900 line-clamp-2 flex-1">
+      <div className="p-2 sm:p-4">
+        <div className="flex items-start justify-between mb-1 sm:mb-2">
+          <h3 className="text-xs sm:text-sm font-semibold text-gray-900 line-clamp-2 flex-1">
             {product.name}
           </h3>
           {product.isOption ? (
-            <Badge variant="option" className="ml-2 flex-shrink-0">
+            <Badge variant="option" className="ml-1 sm:ml-2 flex-shrink-0 text-xs">
               オプション
             </Badge>
           ) : (
-            <Badge variant="standard" className="ml-2 flex-shrink-0">
+            <Badge variant="standard" className="ml-1 sm:ml-2 flex-shrink-0 text-xs">
               標準
             </Badge>
           )}
         </div>
         
-        <p className="text-xs text-gray-500 mb-1">{product.manufacturer}</p>
+        <p className="text-xs text-gray-500 mb-0.5 sm:mb-1">{product.manufacturer}</p>
         
         {product.modelNumber && (
-          <p className="text-xs text-gray-400 mb-2">{product.modelNumber}</p>
+          <p className="text-xs text-gray-400 mb-1 sm:mb-2 hidden sm:block">{product.modelNumber}</p>
         )}
         
-        <div className="flex items-baseline justify-between mt-3">
-          <span className="text-lg font-bold text-gray-900">
+        <div className="flex items-baseline justify-between mt-2 sm:mt-3">
+          <span className="text-sm sm:text-lg font-bold text-gray-900">
             {price === 0 ? '標準仕様' : formatPrice(price)}
           </span>
           {price > 0 && (

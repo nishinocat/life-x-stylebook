@@ -25,7 +25,7 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({ isOpen, onClose }) => 
       />
       
       {/* サイドバー */}
-      <div className="fixed right-0 top-0 h-full w-96 bg-white shadow-xl z-50 flex flex-col">
+      <div className="fixed right-0 top-0 h-full w-full sm:w-96 bg-white shadow-xl z-50 flex flex-col">
         {/* ヘッダー */}
         <div className="p-4 border-b border-gray-200">
           <div className="flex items-center justify-between">

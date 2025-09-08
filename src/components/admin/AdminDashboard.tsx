@@ -144,7 +144,7 @@ export const AdminDashboard: React.FC = () => {
   };
   
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-gray-50 p-4 sm:p-6">
       <div className="max-w-7xl mx-auto">
         {/* ヘッダー */}
         <div className="mb-8">
@@ -160,7 +160,7 @@ export const AdminDashboard: React.FC = () => {
         </div>
         
         {/* タブナビゲーション */}
-        <div className="flex gap-4 mb-6 border-b border-gray-200">
+        <div className="flex gap-2 sm:gap-4 mb-4 sm:mb-6 border-b border-gray-200 overflow-x-auto">
           <button
             onClick={() => setActiveTab('products')}
             className={`pb-2 px-1 border-b-2 transition-colors ${
@@ -169,9 +169,10 @@ export const AdminDashboard: React.FC = () => {
                 : 'border-transparent text-gray-600 hover:text-gray-900'
             }`}
           >
-            <div className="flex items-center gap-2">
-              <Package className="w-5 h-5" />
-              商品管理
+            <div className="flex items-center gap-1 sm:gap-2">
+              <Package className="w-4 h-4 sm:w-5 sm:h-5" />
+              <span className="hidden sm:inline">商品管理</span>
+              <span className="sm:hidden">商品</span>
             </div>
           </button>
           <button
@@ -182,9 +183,10 @@ export const AdminDashboard: React.FC = () => {
                 : 'border-transparent text-gray-600 hover:text-gray-900'
             }`}
           >
-            <div className="flex items-center gap-2">
-              <BarChart3 className="w-5 h-5" />
-              統計ダッシュボード
+            <div className="flex items-center gap-1 sm:gap-2">
+              <BarChart3 className="w-4 h-4 sm:w-5 sm:h-5" />
+              <span className="hidden sm:inline">統計ダッシュボード</span>
+              <span className="sm:hidden">統計</span>
             </div>
           </button>
           <button
@@ -195,9 +197,10 @@ export const AdminDashboard: React.FC = () => {
                 : 'border-transparent text-gray-600 hover:text-gray-900'
             }`}
           >
-            <div className="flex items-center gap-2">
-              <TrendingUp className="w-5 h-5" />
-              採用統計
+            <div className="flex items-center gap-1 sm:gap-2">
+              <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5" />
+              <span className="hidden sm:inline">採用統計</span>
+              <span className="sm:hidden">採用</span>
             </div>
           </button>
           <button
@@ -208,9 +211,10 @@ export const AdminDashboard: React.FC = () => {
                 : 'border-transparent text-gray-600 hover:text-gray-900'
             }`}
           >
-            <div className="flex items-center gap-2">
-              <Bell className="w-5 h-5" />
-              バージョン履歴
+            <div className="flex items-center gap-1 sm:gap-2">
+              <Bell className="w-4 h-4 sm:w-5 sm:h-5" />
+              <span className="hidden sm:inline">バージョン履歴</span>
+              <span className="sm:hidden">履歴</span>
             </div>
           </button>
         </div>
@@ -219,7 +223,7 @@ export const AdminDashboard: React.FC = () => {
         {activeTab === 'products' && (
           <div>
             {/* カテゴリ選択と検索バー */}
-            <div className="flex justify-between items-center mb-6">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-4 sm:mb-6">
               <div className="flex gap-2">
                 <button
                   onClick={() => setProductCategory('exterior')}
@@ -253,27 +257,28 @@ export const AdminDashboard: React.FC = () => {
                 </button>
               </div>
               
-              <div className="flex gap-4">
-                <div className="relative">
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 w-full sm:w-auto">
+                <div className="relative flex-1 sm:flex-initial">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                   <input
                     type="text"
                     placeholder="商品を検索..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
-                <Button variant="primary" onClick={handleAddProduct}>
-                  <Plus className="w-4 h-4 mr-2" />
-                  新規商品追加
+                <Button variant="primary" onClick={handleAddProduct} className="w-full sm:w-auto">
+                  <Plus className="w-4 h-4 mr-1 sm:mr-2" />
+                  <span className="hidden sm:inline">新規商品追加</span>
+                  <span className="sm:hidden">追加</span>
                 </Button>
               </div>
             </div>
             
             {/* 商品リスト */}
             <Card className="overflow-hidden">
-              <div className="overflow-x-auto">
+              <div className="overflow-x-auto -mx-4 sm:mx-0">
                 <table className="w-full">
                   <thead className="bg-gray-50 border-b border-gray-200">
                     <tr>
@@ -360,7 +365,7 @@ export const AdminDashboard: React.FC = () => {
         
         {/* 統計ダッシュボード */}
         {activeTab === 'statistics' && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             <Card className="p-6">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold text-gray-900">年間確定数</h3>
