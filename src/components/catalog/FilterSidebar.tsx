@@ -64,14 +64,16 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
     });
   };
   
-  const subcategoryOptions = [
-    'フローリング',
-    'タイル',
-    'カーペット',
-    'クロス',
-    '塗装',
-    '照明',
-  ];
+  const handleSubcategoryToggle = (subcategory: string) => {
+    const newSubcategories = filters.subcategories.includes(subcategory)
+      ? filters.subcategories.filter((s) => s !== subcategory)
+      : [...filters.subcategories, subcategory];
+    
+    onFilterChange({
+      ...filters,
+      subcategories: newSubcategories,
+    });
+  };
 
   return (
     <div className="w-64 bg-white p-6 rounded-lg shadow-sm border border-gray-200">
@@ -101,53 +103,59 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
         
         {/* カテゴリフィルター */}
         <div>
-          <h3 className="text-sm font-medium text-gray-700 mb-3">大項目</h3>
+          <h3 className="text-sm font-medium text-gray-700 mb-3">カテゴリ</h3>
           <div className="space-y-2">
-            {categories.map((category) => (
-              <label
-                key={category.id}
-                className="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded"
-              >
-                <input
-                  type="checkbox"
-                  checked={filters.categories.includes(category.id)}
-                  onChange={() => handleCategoryToggle(category.id)}
-                  className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                />
-                <span className="ml-2 text-sm text-gray-700">{category.name}</span>
-              </label>
-            ))}
+            {dynamicCategories.length > 0 ? (
+              dynamicCategories.map((category) => (
+                <div key={category.name}>
+                  <label className="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded">
+                    <input
+                      type="checkbox"
+                      checked={filters.categories.includes(category.name)}
+                      onChange={() => handleCategoryToggle(category.name)}
+                      className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                    />
+                    <span className="ml-2 text-sm text-gray-700 font-medium">{category.name}</span>
+                  </label>
+                  {category.subcategories.length > 0 && filters.categories.includes(category.name) && (
+                    <div className="ml-6 mt-1 space-y-1">
+                      {category.subcategories.map((subcategory) => (
+                        <label
+                          key={subcategory}
+                          className="flex items-center cursor-pointer hover:bg-gray-50 p-1 rounded"
+                        >
+                          <input
+                            type="checkbox"
+                            checked={filters.subcategories.includes(subcategory)}
+                            onChange={() => handleSubcategoryToggle(subcategory)}
+                            className="w-3 h-3 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                          />
+                          <span className="ml-2 text-xs text-gray-600">{subcategory}</span>
+                        </label>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))
+            ) : (
+              categories.map((category) => (
+                <label
+                  key={category.id}
+                  className="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded"
+                >
+                  <input
+                    type="checkbox"
+                    checked={filters.categories.includes(category.id)}
+                    onChange={() => handleCategoryToggle(category.id)}
+                    className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                  />
+                  <span className="ml-2 text-sm text-gray-700">{category.name}</span>
+                </label>
+              ))
+            )}
           </div>
         </div>
         
-        {/* サブカテゴリフィルター */}
-        <div>
-          <h3 className="text-sm font-medium text-gray-700 mb-3">素材</h3>
-          <div className="space-y-2">
-            {subcategoryOptions.map((subcategory) => (
-              <label
-                key={subcategory}
-                className="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded"
-              >
-                <input
-                  type="checkbox"
-                  checked={filters.subcategories.includes(subcategory)}
-                  onChange={() => {
-                    const newSubcategories = filters.subcategories.includes(subcategory)
-                      ? filters.subcategories.filter((s) => s !== subcategory)
-                      : [...filters.subcategories, subcategory];
-                    onFilterChange({
-                      ...filters,
-                      subcategories: newSubcategories,
-                    });
-                  }}
-                  className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                />
-                <span className="ml-2 text-sm text-gray-700">{subcategory}</span>
-              </label>
-            ))}
-          </div>
-        </div>
         
         {/* 標準/オプション */}
         <div>
