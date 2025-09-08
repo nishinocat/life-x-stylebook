@@ -12,6 +12,8 @@ interface OrderStore {
     totalConfirmedOrders: number;
     yearlyTotal: number;
     monthlyAverage: number;
+    averageOrderValue: number;
+    monthlyData: { month: number; total: number }[];
   };
 }
 
@@ -80,11 +82,22 @@ export const useOrderStore = create<OrderStore>((set, get) => ({
     
     const yearlyTotal = yearlyOrders.reduce((sum, o) => sum + o.totalAmount, 0);
     const monthlyAverage = yearlyTotal / 12;
+    const averageOrderValue = confirmedOrders.length > 0 
+      ? yearlyTotal / confirmedOrders.length 
+      : 0;
+    
+    // Generate monthly data
+    const monthlyData = Array.from({ length: 12 }, (_, i) => ({
+      month: i + 1,
+      total: Math.floor(Math.random() * 5000000) + 1000000 // Mock data
+    }));
     
     return {
       totalConfirmedOrders: confirmedOrders.length,
       yearlyTotal,
       monthlyAverage,
+      averageOrderValue,
+      monthlyData,
     };
   },
 }));

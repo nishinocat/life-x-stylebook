@@ -1,12 +1,12 @@
 import { create } from 'zustand';
-import type { Version, VersionChange } from '../types/version';
+import type { Version } from '../types/version';
 
 interface VersionStore {
   currentVersion: string;
   versions: Version[];
-  pendingChanges: VersionChange[];
+  pendingChanges: string[];
   
-  addChange: (change: Omit<VersionChange, 'id' | 'changedAt'>) => void;
+  addChange: (change: string) => void;
   createNewVersion: (description: string, createdBy: string) => void;
   getCurrentVersion: () => Version | undefined;
   getVersionHistory: () => Version[];
@@ -34,14 +34,8 @@ export const useVersionStore = create<VersionStore>((set, get) => ({
   pendingChanges: [],
   
   addChange: (change) => {
-    const newChange: VersionChange = {
-      ...change,
-      id: Date.now().toString(),
-      changedAt: new Date(),
-    };
-    
     set((state) => ({
-      pendingChanges: [...state.pendingChanges, newChange],
+      pendingChanges: [...state.pendingChanges, change],
     }));
   },
   

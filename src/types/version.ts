@@ -4,7 +4,7 @@ export interface Version {
   createdAt: Date;
   createdBy: string;
   description: string;
-  changes: VersionChange[];
+  changes: string[];
   isActive: boolean;
 }
 

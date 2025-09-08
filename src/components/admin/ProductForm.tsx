@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { X, Plus, Trash2 } from 'lucide-react';
-import type { Product, ProductVariant, PricingInfo } from '../../types/product';
+import type { Product, ProductVariant } from '../../types/product';
 import { Button } from '../common/Button';
 
 interface ProductFormProps {
