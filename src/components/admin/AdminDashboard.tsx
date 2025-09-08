@@ -18,9 +18,11 @@ export const AdminDashboard: React.FC = () => {
   const [editingProduct, setEditingProduct] = useState<Product | undefined>();
   
   const currentVersion = useVersionStore((state) => state.currentVersion);
-  const versions = useVersionStore((state) => state.versionHistory);
-  const statistics = useOrderStore((state) => {
-    const confirmedOrders = state.orders.filter(o => 
+  const versions = useVersionStore((state) => state.versions || []);
+  const orders = useOrderStore((state) => state.orders || []);
+  
+  const statistics = useMemo(() => {
+    const confirmedOrders = orders.filter(o => 
       o.status === 'confirmed' || o.status === 'modified' || o.status === 'completed'
     );
     
@@ -42,18 +44,21 @@ export const AdminDashboard: React.FC = () => {
         };
       })
     };
-  });
+  }, [orders]);
   
   // 採用統計データを直接取得（セレクターを使用）
-  const topProducts = useStatisticsStore((state) => 
-    state.productStats
+  const productStats = useStatisticsStore((state) => state.productStats || []);
+  const yearlyAdoptions = useStatisticsStore((state) => state.yearlyAdoptions || []);
+  
+  const topProducts = useMemo(() => 
+    [...productStats]
       .sort((a, b) => b.adoptionCount - a.adoptionCount)
       .slice(0, 10)
-  );
+  , [productStats]);
   
-  const categoryStats = useStatisticsStore((state) => {
+  const categoryStats = useMemo(() => {
     const categoryMap = new Map<string, { count: number; revenue: number }>();
-    state.productStats.forEach(stat => {
+    productStats.forEach(stat => {
       const existing = categoryMap.get(stat.categoryName) || { count: 0, revenue: 0 };
       categoryMap.set(stat.categoryName, {
         count: existing.count + stat.adoptionCount,
@@ -65,9 +70,9 @@ export const AdminDashboard: React.FC = () => {
       count: data.count,
       revenue: data.revenue
     }));
-  });
+  }, [productStats]);
   
-  const monthlyStats = useStatisticsStore((state) => state.yearlyAdoptions);
+  const monthlyStats = yearlyAdoptions;
   
   const {
     exteriorProducts,
@@ -467,7 +472,9 @@ export const AdminDashboard: React.FC = () => {
           <div>
             <h2 className="text-xl font-semibold text-gray-900 mb-6">バージョン履歴</h2>
             <div className="space-y-4">
-              {versions.map((version) => (
+              {versions.sort((a, b) => 
+                new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+              ).map((version) => (
                 <Card key={version.id} className="p-6">
                   <div className="flex justify-between items-start">
                     <div>
