@@ -11,7 +11,7 @@ interface CartSidebarProps {
 }
 
 export const CartSidebar: React.FC<CartSidebarProps> = ({ isOpen, onClose }) => {
-  const { items, removeItem, updateQuantity, getTotalPrice, clearCart, selectedPlan } = useCartStore();
+  const { items, removeItem, updateQuantity, getTotalPrice, clearCart } = useCartStore();
   const totalPrice = getTotalPrice();
 
   if (!isOpen) return null;
@@ -49,7 +49,7 @@ export const CartSidebar: React.FC<CartSidebarProps> = ({ isOpen, onClose }) => 
             <div className="space-y-4">
               {items.map((item) => {
                 const price = item.product.pricing.find(
-                  (p) => p.planId === selectedPlan
+                  (p) => p.planId === 'LACIE'
                 )?.price || 0;
                 
                 return (

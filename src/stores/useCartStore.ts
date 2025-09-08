@@ -1,20 +1,17 @@
 import { create } from 'zustand';
-import type { CartItem, PlanType } from '../types/product';
+import type { CartItem } from '../types/product';
 
 interface CartStore {
   items: CartItem[];
-  selectedPlan: PlanType;
   addItem: (item: CartItem) => void;
   removeItem: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
   clearCart: () => void;
-  setSelectedPlan: (plan: PlanType) => void;
   getTotalPrice: () => number;
 }
 
 export const useCartStore = create<CartStore>((set, get) => ({
   items: [],
-  selectedPlan: 'LACIE',
   
   addItem: (item) => {
     set((state) => {
@@ -63,15 +60,11 @@ export const useCartStore = create<CartStore>((set, get) => ({
     set({ items: [] });
   },
   
-  setSelectedPlan: (plan) => {
-    set({ selectedPlan: plan });
-  },
-  
   getTotalPrice: () => {
-    const { items, selectedPlan } = get();
+    const { items } = get();
     return items.reduce((total, item) => {
       const price = item.product.pricing.find(
-        (p) => p.planId === selectedPlan
+        (p) => p.planId === 'LACIE'
       )?.price || 0;
       return total + price * item.quantity;
     }, 0);

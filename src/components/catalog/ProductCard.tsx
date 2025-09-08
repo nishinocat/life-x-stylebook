@@ -11,8 +11,7 @@ interface ProductCardProps {
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product, onSelect }) => {
-  const selectedPlan = useCartStore((state) => state.selectedPlan);
-  const price = product.pricing.find((p) => p.planId === selectedPlan)?.price || 0;
+  const price = product.pricing.find((p) => p.planId === 'LACIE')?.price || 0;
   const defaultVariant = product.variants[0];
   
   const imagePlaceholder = `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(`

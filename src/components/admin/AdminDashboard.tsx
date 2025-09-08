@@ -339,7 +339,7 @@ export const AdminDashboard: React.FC = () => {
                         メーカー
                       </th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        価格 (LACIE/HOURS)
+                        価格 (LACIE)
                       </th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         タイプ
@@ -369,8 +369,7 @@ export const AdminDashboard: React.FC = () => {
                             {product.manufacturer}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                            {formatPrice(product.pricing.find(p => p.planId === 'LACIE')?.price || 0)} / 
-                            {formatPrice(product.pricing.find(p => p.planId === 'HOURS')?.price || 0)}
+                            {formatPrice(product.pricing.find(p => p.planId === 'LACIE')?.price || 0)}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${

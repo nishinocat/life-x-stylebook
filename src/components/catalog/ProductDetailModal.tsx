@@ -21,12 +21,12 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
 }) => {
   const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const { selectedPlan, addItem } = useCartStore();
+  const { addItem } = useCartStore();
   
   if (!product) return null;
   
   const variant = selectedVariant || product.variants[0];
-  const price = product.pricing.find((p) => p.planId === selectedPlan)?.price || 0;
+  const price = product.pricing.find((p) => p.planId === 'LACIE')?.price || 0;
   
   const imagePlaceholder = `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(`
     <svg width="600" height="400" xmlns="http://www.w3.org/2000/svg">
@@ -42,7 +42,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
       product,
       selectedVariant: variant,
       quantity: 1,
-      plan: selectedPlan,
+      plan: 'LACIE',
     });
     onClose();
   };

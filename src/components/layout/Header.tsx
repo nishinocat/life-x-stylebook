@@ -20,7 +20,7 @@ export const Header: React.FC<HeaderProps> = ({
   onAdminClick,
   onFilterClick
 }) => {
-  const { items, getTotalPrice, selectedPlan, setSelectedPlan } = useCartStore();
+  const { items, getTotalPrice } = useCartStore();
   const totalPrice = getTotalPrice();
   const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -42,29 +42,12 @@ export const Header: React.FC<HeaderProps> = ({
               <span className="hidden sm:block text-sm text-gray-500">カタログ</span>
             </div>
             
-            {/* デスクトップ用プラン選択 */}
+            {/* デスクトップ用プラン表示 */}
             <div className="hidden md:flex items-center gap-2">
               <span className="text-sm text-gray-600 mr-2">プラン:</span>
-              <button
-                onClick={() => setSelectedPlan('LACIE')}
-                className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
-                  selectedPlan === 'LACIE'
-                    ? 'bg-red-500 text-white'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                }`}
-              >
+              <div className="px-3 py-1.5 rounded-lg text-sm font-medium bg-red-500 text-white">
                 LACIE
-              </button>
-              <button
-                onClick={() => setSelectedPlan('HOURS')}
-                className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
-                  selectedPlan === 'HOURS'
-                    ? 'bg-green-500 text-white'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                }`}
-              >
-                HOURS
-              </button>
+              </div>
             </div>
             
             {/* 右側のアクション */}
@@ -166,30 +149,13 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
         </nav>
         
-        {/* モバイル用プラン選択 */}
+        {/* モバイル用プラン表示 */}
         <div className="md:hidden px-4 py-2 bg-white border-t border-gray-100">
           <div className="flex items-center justify-center gap-2">
             <span className="text-xs text-gray-600">プラン:</span>
-            <button
-              onClick={() => setSelectedPlan('LACIE')}
-              className={`px-4 py-1 rounded-lg text-xs font-medium ${
-                selectedPlan === 'LACIE'
-                  ? 'bg-red-500 text-white'
-                  : 'bg-gray-100 text-gray-600'
-              }`}
-            >
+            <div className="px-4 py-1 rounded-lg text-xs font-medium bg-red-500 text-white">
               LACIE
-            </button>
-            <button
-              onClick={() => setSelectedPlan('HOURS')}
-              className={`px-4 py-1 rounded-lg text-xs font-medium ${
-                selectedPlan === 'HOURS'
-                  ? 'bg-green-500 text-white'
-                  : 'bg-gray-100 text-gray-600'
-              }`}
-            >
-              HOURS
-            </button>
+            </div>
           </div>
         </div>
       </header>
