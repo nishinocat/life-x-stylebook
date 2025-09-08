@@ -18,18 +18,50 @@ export const AdminDashboard: React.FC = () => {
   const [editingProduct, setEditingProduct] = useState<Product | undefined>();
   
   const currentVersion = useVersionStore((state) => state.currentVersion);
-  const versions = useVersionStore((state) => state.getVersionHistory());
-  const statistics = useOrderStore((state) => state.getStatistics());
+  const versions = useVersionStore((state) => state.versionHistory);
+  const statistics = useOrderStore((state) => ({
+    totalConfirmedOrders: state.confirmedOrders.length,
+    yearlyTotal: state.confirmedOrders.reduce((sum, order) => sum + order.totalAmount, 0),
+    averageOrderValue: state.confirmedOrders.length > 0 
+      ? state.confirmedOrders.reduce((sum, order) => sum + order.totalAmount, 0) / state.confirmedOrders.length 
+      : 0,
+    monthlyData: Array.from({ length: 12 }, (_, i) => {
+      const month = i + 1;
+      const monthOrders = state.confirmedOrders.filter(order => 
+        new Date(order.confirmedAt).getMonth() === i
+      );
+      return {
+        month,
+        count: monthOrders.length,
+        total: monthOrders.reduce((sum, order) => sum + order.totalAmount, 0)
+      };
+    })
+  }));
   
-  // 採用統計データを直接取得
-  const getTopProducts = useStatisticsStore((state) => state.getTopProducts);
-  const getCategoryStats = useStatisticsStore((state) => state.getCategoryStats);
-  const getMonthlyStats = useStatisticsStore((state) => state.getMonthlyStats);
+  // 採用統計データを直接取得（セレクターを使用）
+  const topProducts = useStatisticsStore((state) => 
+    state.productStats
+      .sort((a, b) => b.adoptionCount - a.adoptionCount)
+      .slice(0, 10)
+  );
   
-  // 統計データをメモ化
-  const topProducts = useMemo(() => getTopProducts(10), []);
-  const categoryStats = useMemo(() => getCategoryStats(), []);
-  const monthlyStats = useMemo(() => getMonthlyStats(), []);
+  const categoryStats = useStatisticsStore((state) => {
+    const categoryMap = new Map<string, { count: number; revenue: number }>();
+    state.productStats.forEach(stat => {
+      const existing = categoryMap.get(stat.categoryName) || { count: 0, revenue: 0 };
+      categoryMap.set(stat.categoryName, {
+        count: existing.count + stat.adoptionCount,
+        revenue: existing.revenue + stat.totalRevenue
+      });
+    });
+    return Array.from(categoryMap.entries()).map(([category, data]) => ({
+      category,
+      count: data.count,
+      revenue: data.revenue
+    }));
+  });
+  
+  const monthlyStats = useStatisticsStore((state) => state.yearlyAdoptions);
   
   const {
     exteriorProducts,
@@ -326,8 +358,8 @@ export const AdminDashboard: React.FC = () => {
                             {product.manufacturer}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                            {formatPrice(product.pricing.find(p => p.plan === 'LACIE')?.price || 0)} / 
-                            {formatPrice(product.pricing.find(p => p.plan === 'HOURS')?.price || 0)}
+                            {formatPrice(product.pricing.find(p => p.planId === 'LACIE')?.price || 0)} / 
+                            {formatPrice(product.pricing.find(p => p.planId === 'HOURS')?.price || 0)}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
