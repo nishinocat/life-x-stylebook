@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Header } from './components/layout/Header';
 import { CatalogWithTabs } from './components/catalog/CatalogWithTabs';
-import { CartSidebar } from './components/cart/CartSidebar';
+import { CartSidebarEnhanced } from './components/cart/CartSidebarEnhanced';
 import { ConfirmOrderModal } from './components/catalog/ConfirmOrderModal';
 import { AdminDashboard } from './components/admin/AdminDashboard';
 import { useVersionStore } from './stores/useVersionStore';
@@ -44,7 +44,7 @@ function App() {
         Ver. {currentVersion}
       </div>
       
-      <CartSidebar
+      <CartSidebarEnhanced
         isOpen={isCartOpen}
         onClose={handleCartClose}
       />
