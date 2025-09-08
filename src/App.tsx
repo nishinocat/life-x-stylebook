@@ -10,7 +10,7 @@ import { useCartStore } from './stores/useCartStore';
 function App() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<'interior' | 'exterior' | 'water'>('interior');
+  const [activeTab, setActiveTab] = useState<'exterior' | 'interior' | 'water'>('exterior');
   const [showAdmin, setShowAdmin] = useState(false);
   const [isAdmin] = useState(true); // デモ用に管理者モードを有効化
   
@@ -51,7 +51,6 @@ function App() {
       />
       
       <main className="flex-1 overflow-hidden">
-        {activeTab === 'interior' && <CatalogView />}
         {activeTab === 'exterior' && (
           <div className="flex items-center justify-center h-full text-gray-500">
             <div className="text-center">
@@ -60,6 +59,7 @@ function App() {
             </div>
           </div>
         )}
+        {activeTab === 'interior' && <CatalogView />}
         {activeTab === 'water' && (
           <div className="flex items-center justify-center h-full text-gray-500">
             <div className="text-center">

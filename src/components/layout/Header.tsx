@@ -5,8 +5,8 @@ import { formatPrice } from '../../lib/utils';
 
 interface HeaderProps {
   onCartClick: () => void;
-  activeTab: 'interior' | 'exterior' | 'water';
-  onTabChange: (tab: 'interior' | 'exterior' | 'water') => void;
+  activeTab: 'exterior' | 'interior' | 'water';
+  onTabChange: (tab: 'exterior' | 'interior' | 'water') => void;
   isAdmin?: boolean;
   onAdminClick?: () => void;
 }
@@ -92,19 +92,6 @@ export const Header: React.FC<HeaderProps> = ({
           <ul className="flex gap-2">
             <li>
               <button
-                onClick={() => onTabChange('interior')}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                  activeTab === 'interior'
-                    ? 'bg-blue-500 text-white'
-                    : 'text-gray-600 hover:bg-gray-200'
-                }`}
-              >
-                <Home className="w-4 h-4" />
-                インテリア
-              </button>
-            </li>
-            <li>
-              <button
                 onClick={() => onTabChange('exterior')}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                   activeTab === 'exterior'
@@ -114,6 +101,19 @@ export const Header: React.FC<HeaderProps> = ({
               >
                 <Trees className="w-4 h-4" />
                 エクステリア
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={() => onTabChange('interior')}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                  activeTab === 'interior'
+                    ? 'bg-blue-500 text-white'
+                    : 'text-gray-600 hover:bg-gray-200'
+                }`}
+              >
+                <Home className="w-4 h-4" />
+                インテリア
               </button>
             </li>
             <li>
@@ -138,7 +138,7 @@ export const Header: React.FC<HeaderProps> = ({
               className="flex items-center gap-2 px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors"
             >
               <Settings className="w-4 h-4" />
-              管理画面
+              アイテムのメンテナンス
             </button>
           )}
         </div>
