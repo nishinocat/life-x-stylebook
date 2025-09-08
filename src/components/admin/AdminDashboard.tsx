@@ -138,6 +138,7 @@ export const AdminDashboard: React.FC = () => {
   
   // 新規商品追加開始
   const handleAddProduct = () => {
+    console.log('Adding new product');
     setEditingProduct(undefined);
     setShowProductForm(true);
   };
