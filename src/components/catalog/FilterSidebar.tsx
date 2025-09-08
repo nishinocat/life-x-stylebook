@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import type { Category } from '../../types/product';
 import type { FilterOptions } from '../../types/filter';
 import { Button } from '../common/Button';
+import { useProductStore } from '../../stores/useProductStore';
 
 interface FilterSidebarProps {
   categories: Category[];
   filters: FilterOptions;
   onFilterChange: (filters: FilterOptions) => void;
   onReset: () => void;
+  catalogType?: 'exterior' | 'interior' | 'water';
 }
 
 export const FilterSidebar: React.FC<FilterSidebarProps> = ({
@@ -15,7 +17,42 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
   filters,
   onFilterChange,
   onReset,
+  catalogType = 'interior',
 }) => {
+  const { exteriorProducts, interiorProducts, waterProducts } = useProductStore();
+  
+  // カタログタイプに応じたカテゴリを動的に生成
+  const dynamicCategories = useMemo(() => {
+    let products = [];
+    switch (catalogType) {
+      case 'exterior':
+        products = exteriorProducts;
+        break;
+      case 'interior':
+        products = interiorProducts;
+        break;
+      case 'water':
+        products = waterProducts;
+        break;
+    }
+    
+    // カテゴリを集計
+    const categoryMap = new Map<string, Set<string>>();
+    products.forEach(product => {
+      if (!categoryMap.has(product.categoryName)) {
+        categoryMap.set(product.categoryName, new Set());
+      }
+      if (product.subcategory) {
+        categoryMap.get(product.categoryName)?.add(product.subcategory);
+      }
+    });
+    
+    return Array.from(categoryMap.entries()).map(([name, subcategories]) => ({
+      name,
+      subcategories: Array.from(subcategories)
+    }));
+  }, [catalogType, exteriorProducts, interiorProducts, waterProducts]);
+  
   const handleCategoryToggle = (categoryId: string) => {
     const newCategories = filters.categories.includes(categoryId)
       ? filters.categories.filter((id) => id !== categoryId)

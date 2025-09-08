@@ -4,6 +4,7 @@ import { X, Send, Check } from 'lucide-react';
 import { Button } from '../common/Button';
 import { useCartStore } from '../../stores/useCartStore';
 import { useNotificationStore } from '../../stores/useNotificationStore';
+import { useStatisticsStore } from '../../stores/useStatisticsStore';
 import { formatPrice } from '../../lib/utils';
 
 interface ConfirmOrderModalProps {
@@ -19,8 +20,9 @@ export const ConfirmOrderModal: React.FC<ConfirmOrderModalProps> = ({
   const [customerEmail, setCustomerEmail] = useState('');
   const [isConfirmed, setIsConfirmed] = useState(false);
   
-  const { items, getTotalPrice, clearCart } = useCartStore();
+  const { items, getTotalPrice, clearCart, selectedPlan } = useCartStore();
   const addNotification = useNotificationStore((state) => state.addNotification);
+  const recordAdoption = useStatisticsStore((state) => state.recordAdoption);
   const totalPrice = getTotalPrice();
   
   const handleConfirm = () => {
@@ -28,6 +30,17 @@ export const ConfirmOrderModal: React.FC<ConfirmOrderModalProps> = ({
       alert('お客様情報を入力してください');
       return;
     }
+    
+    // 統計を記録
+    items.forEach(item => {
+      const price = item.product.pricing.find(p => p.plan === selectedPlan)?.price || 0;
+      recordAdoption(
+        item.product.id,
+        item.product.name,
+        item.product.categoryName,
+        price * item.quantity
+      );
+    });
     
     // 通知を追加
     addNotification({

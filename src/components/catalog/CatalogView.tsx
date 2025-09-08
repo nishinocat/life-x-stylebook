@@ -108,6 +108,7 @@ export const CatalogView: React.FC<CatalogViewProps> = ({ catalogType = 'interio
           filters={filters}
           onFilterChange={setFilters}
           onReset={handleResetFilters}
+          catalogType={catalogType}
         />
       </div>
       

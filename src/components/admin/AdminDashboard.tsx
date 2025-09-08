@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
-import { Plus, Edit, Trash2, BarChart3, Package, Bell, Search } from 'lucide-react';
+import { Plus, Edit, Trash2, BarChart3, Package, Bell, Search, TrendingUp } from 'lucide-react';
 import { Button } from '../common/Button';
 import { Card } from '../common/Card';
 import { ProductForm } from './ProductForm';
 import { useVersionStore } from '../../stores/useVersionStore';
 import { useOrderStore } from '../../stores/useOrderStore';
 import { useProductStore } from '../../stores/useProductStore';
+import { useStatisticsStore } from '../../stores/useStatisticsStore';
 import { formatPrice } from '../../lib/utils';
 import type { Product } from '../../types/product';
 
 export const AdminDashboard: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'products' | 'statistics' | 'versions'>('products');
+  const [activeTab, setActiveTab] = useState<'products' | 'statistics' | 'adoption' | 'versions'>('products');
   const [productCategory, setProductCategory] = useState<'exterior' | 'interior' | 'water'>('exterior');
   const [searchTerm, setSearchTerm] = useState('');
   const [showProductForm, setShowProductForm] = useState(false);
@@ -19,6 +20,13 @@ export const AdminDashboard: React.FC = () => {
   const currentVersion = useVersionStore((state) => state.currentVersion);
   const versions = useVersionStore((state) => state.getVersionHistory());
   const statistics = useOrderStore((state) => state.getStatistics());
+  
+  // 採用統計データ
+  const {
+    getTopProducts,
+    getCategoryStats,
+    getMonthlyStats
+  } = useStatisticsStore();
   
   const {
     exteriorProducts,
@@ -176,6 +184,19 @@ export const AdminDashboard: React.FC = () => {
             <div className="flex items-center gap-2">
               <BarChart3 className="w-5 h-5" />
               統計ダッシュボード
+            </div>
+          </button>
+          <button
+            onClick={() => setActiveTab('adoption')}
+            className={`pb-2 px-1 border-b-2 transition-colors ${
+              activeTab === 'adoption'
+                ? 'border-blue-500 text-blue-600'
+                : 'border-transparent text-gray-600 hover:text-gray-900'
+            }`}
+          >
+            <div className="flex items-center gap-2">
+              <TrendingUp className="w-5 h-5" />
+              採用統計
             </div>
           </button>
           <button
@@ -430,6 +451,106 @@ export const AdminDashboard: React.FC = () => {
                 </Card>
               ))}
             </div>
+          </div>
+        )}
+        
+        {/* 採用統計 */}
+        {activeTab === 'adoption' && (
+          <div>
+            <h2 className="text-xl font-semibold text-gray-900 mb-6">商品採用統計</h2>
+            
+            {/* TOP採用商品 */}
+            <div className="mb-8">
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">人気商品TOP10</h3>
+              <Card className="overflow-hidden">
+                <table className="w-full">
+                  <thead className="bg-gray-50 border-b border-gray-200">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        順位
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        商品名
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        カテゴリ
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        採用回数
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        売上合計
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {getTopProducts(10).length === 0 ? (
+                      <tr>
+                        <td colSpan={5} className="px-6 py-8 text-center text-gray-500">
+                          まだ採用データがありません
+                        </td>
+                      </tr>
+                    ) : (
+                      getTopProducts(10).map((product, index) => (
+                        <tr key={product.productId}>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                            {index + 1}位
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            {product.productName}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {product.categoryName}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            {product.adoptionCount}回
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            {formatPrice(product.totalRevenue)}
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </Card>
+            </div>
+            
+            {/* カテゴリ別統計 */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              {getCategoryStats().map((stat) => (
+                <Card key={stat.category} className="p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-lg font-semibold text-gray-900">{stat.category}</h3>
+                    <Package className="w-5 h-5 text-blue-500" />
+                  </div>
+                  <p className="text-2xl font-bold text-gray-900">
+                    {stat.count}回
+                  </p>
+                  <p className="text-sm text-gray-600 mt-1">
+                    売上: {formatPrice(stat.revenue)}
+                  </p>
+                </Card>
+              ))}
+            </div>
+            
+            {/* 月別採用推移 */}
+            <Card className="p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">月別採用推移</h3>
+              <div className="h-64 flex items-end justify-between gap-2">
+                {getMonthlyStats().map((data) => (
+                  <div key={data.month} className="flex-1 flex flex-col items-center">
+                    <div
+                      className="w-full bg-green-500 rounded-t"
+                      style={{
+                        height: `${data.count > 0 ? (data.count / Math.max(...getMonthlyStats().map(d => d.count), 1)) * 100 : 0}%`
+                      }}
+                    />
+                    <span className="text-xs text-gray-600 mt-2">{data.month}月</span>
+                  </div>
+                ))}
+              </div>
+            </Card>
           </div>
         )}
       </div>
