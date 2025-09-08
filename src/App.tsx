@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Header } from './components/layout/Header';
-import { AllCatalogView } from './components/catalog/AllCatalogView';
+import { CatalogWithTabs } from './components/catalog/CatalogWithTabs';
 import { CartSidebar } from './components/cart/CartSidebar';
 import { ConfirmOrderModal } from './components/catalog/ConfirmOrderModal';
 import { AdminDashboard } from './components/admin/AdminDashboard';
@@ -36,7 +36,7 @@ function App() {
       />
       
       <main className="flex-1 overflow-hidden">
-        <AllCatalogView />
+        <CatalogWithTabs />
       </main>
       
       {/* バージョン表示 */}

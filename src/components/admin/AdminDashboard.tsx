@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { Plus, Edit, Trash2, BarChart3, Package, Bell, Search, TrendingUp } from 'lucide-react';
 import { Button } from '../common/Button';
 import { Card } from '../common/Card';
-import { ProductForm } from './ProductForm';
+import { ProductFormNew } from './ProductFormNew';
 import { useVersionStore } from '../../stores/useVersionStore';
 import { useOrderStore } from '../../stores/useOrderStore';
 import { useProductStore } from '../../stores/useProductStore';
@@ -611,8 +611,9 @@ export const AdminDashboard: React.FC = () => {
       
       {/* 商品フォームモーダル */}
       {showProductForm && (
-        <ProductForm
+        <ProductFormNew
           product={editingProduct}
+          catalogType={productCategory}
           onSave={handleSaveProduct}
           onClose={() => {
             setShowProductForm(false);

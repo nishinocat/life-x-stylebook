@@ -36,13 +36,6 @@ export const Header: React.FC<HeaderProps> = ({
               <span className="hidden sm:block text-sm text-gray-500">カタログ</span>
             </div>
             
-            {/* デスクトップ用プラン表示 */}
-            <div className="hidden md:flex items-center gap-2">
-              <span className="text-sm text-gray-600 mr-2">プラン:</span>
-              <div className="px-3 py-1.5 rounded-lg text-sm font-medium bg-red-500 text-white">
-                LACIE
-              </div>
-            </div>
             
             {/* 右側のアクション */}
             <div className="flex items-center gap-2">
@@ -89,15 +82,6 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
         )}
         
-        {/* モバイル用プラン表示 */}
-        <div className="md:hidden px-4 py-2 bg-white border-t border-gray-100">
-          <div className="flex items-center justify-center gap-2">
-            <span className="text-xs text-gray-600">プラン:</span>
-            <div className="px-4 py-1 rounded-lg text-xs font-medium bg-red-500 text-white">
-              LACIE
-            </div>
-          </div>
-        </div>
       </header>
       
       {/* モバイルメニュー */}
