@@ -4,10 +4,15 @@ import type { FilterOptions } from '../../types/filter';
 import { ProductCard } from './ProductCard';
 import { FilterSidebar } from './FilterSidebar';
 import { ProductDetailModal } from './ProductDetailModal';
-import { categories, mockProducts } from '../../data/mockData';
+import { categories } from '../../data/mockData';
+import { useProductStore } from '../../stores/useProductStore';
 import { Search } from 'lucide-react';
 
-export const CatalogView: React.FC = () => {
+interface CatalogViewProps {
+  catalogType?: 'exterior' | 'interior' | 'water';
+}
+
+export const CatalogView: React.FC<CatalogViewProps> = ({ catalogType = 'interior' }) => {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -20,8 +25,27 @@ export const CatalogView: React.FC = () => {
     searchQuery: '',
   });
   
+  // ProductStoreから商品を取得
+  const exteriorProducts = useProductStore((state) => state.exteriorProducts);
+  const interiorProducts = useProductStore((state) => state.interiorProducts);
+  const waterProducts = useProductStore((state) => state.waterProducts);
+  
+  // カタログタイプに応じて商品を選択
+  const products = useMemo(() => {
+    switch (catalogType) {
+      case 'exterior':
+        return exteriorProducts;
+      case 'interior':
+        return interiorProducts;
+      case 'water':
+        return waterProducts;
+      default:
+        return interiorProducts;
+    }
+  }, [catalogType, exteriorProducts, interiorProducts, waterProducts]);
+  
   const filteredProducts = useMemo(() => {
-    let filtered = [...mockProducts];
+    let filtered = [...products];
     
     // カテゴリフィルター
     if (filters.categories.length > 0) {
@@ -56,7 +80,7 @@ export const CatalogView: React.FC = () => {
     }
     
     return filtered;
-  }, [filters, searchQuery]);
+  }, [filters, searchQuery, products]);
   
   const handleProductSelect = (product: Product) => {
     setSelectedProduct(product);

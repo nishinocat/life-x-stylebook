@@ -135,10 +135,10 @@ export const Header: React.FC<HeaderProps> = ({
           {isAdmin && (
             <button
               onClick={onAdminClick}
-              className="flex items-center gap-2 px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors"
+              className="flex items-center gap-1 px-3 py-1.5 text-xs text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded transition-colors"
             >
-              <Settings className="w-4 h-4" />
-              アイテムのメンテナンス
+              <Settings className="w-3 h-3" />
+              メンテナンス
             </button>
           )}
         </div>

@@ -51,15 +51,8 @@ function App() {
       />
       
       <main className="flex-1 overflow-hidden">
-        {activeTab === 'exterior' && (
-          <div className="flex items-center justify-center h-full text-gray-500">
-            <div className="text-center">
-              <h2 className="text-2xl font-semibold mb-2">エクステリアカタログ</h2>
-              <p>準備中です</p>
-            </div>
-          </div>
-        )}
-        {activeTab === 'interior' && <CatalogView />}
+        {activeTab === 'exterior' && <CatalogView catalogType="exterior" />}
+        {activeTab === 'interior' && <CatalogView catalogType="interior" />}
         {activeTab === 'water' && (
           <div className="flex items-center justify-center h-full text-gray-500">
             <div className="text-center">
