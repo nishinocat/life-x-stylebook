@@ -4,7 +4,6 @@ import { Button } from '../common/Button';
 import { Card } from '../common/Card';
 import { useVersionStore } from '../../stores/useVersionStore';
 import { useOrderStore } from '../../stores/useOrderStore';
-import { useNotificationStore } from '../../stores/useNotificationStore';
 import { formatPrice } from '../../lib/utils';
 
 export const AdminDashboard: React.FC = () => {
@@ -12,7 +11,6 @@ export const AdminDashboard: React.FC = () => {
   const currentVersion = useVersionStore((state) => state.currentVersion);
   const versions = useVersionStore((state) => state.getVersionHistory());
   const statistics = useOrderStore((state) => state.getStatistics());
-  const notifications = useNotificationStore((state) => state.notifications);
   
   return (
     <div className="min-h-screen bg-gray-50 p-6">

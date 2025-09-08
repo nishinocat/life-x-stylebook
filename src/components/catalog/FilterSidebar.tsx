@@ -2,7 +2,6 @@ import React from 'react';
 import type { Category } from '../../types/product';
 import type { FilterOptions } from '../../types/filter';
 import { Button } from '../common/Button';
-import { cn } from '../../lib/utils';
 
 interface FilterSidebarProps {
   categories: Category[];

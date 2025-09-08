@@ -20,7 +20,7 @@ interface NotificationStore {
   clearNotifications: () => void;
 }
 
-export const useNotificationStore = create<NotificationStore>((set, get) => ({
+export const useNotificationStore = create<NotificationStore>((set) => ({
   notifications: [],
   unreadCount: 0,
   

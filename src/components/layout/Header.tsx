@@ -1,8 +1,7 @@
 import React from 'react';
-import { ShoppingCart, User, Home, Droplets, Trees, Settings, Bell } from 'lucide-react';
+import { ShoppingCart, User, Home, Droplets, Trees, Settings } from 'lucide-react';
 import { useCartStore } from '../../stores/useCartStore';
 import { formatPrice } from '../../lib/utils';
-import { Badge } from '../common/Badge';
 
 interface HeaderProps {
   onCartClick: () => void;

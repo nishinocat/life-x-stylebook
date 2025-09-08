@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Header } from './components/layout/Header';
 import { CatalogView } from './components/catalog/CatalogView';
 import { CartSidebar } from './components/cart/CartSidebar';
@@ -12,7 +12,7 @@ function App() {
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<'interior' | 'exterior' | 'water'>('interior');
   const [showAdmin, setShowAdmin] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(true); // デモ用に管理者モードを有効化
+  const [isAdmin] = useState(true); // デモ用に管理者モードを有効化
   
   const currentVersion = useVersionStore((state) => state.currentVersion);
   const items = useCartStore((state) => state.items);
