@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import type { Category } from '../../types/product';
 import type { FilterOptions } from '../../types/filter';
-import { Button } from '../common/Button';
 import { useProductStore } from '../../stores/useProductStore';
 
 interface FilterSidebarProps {

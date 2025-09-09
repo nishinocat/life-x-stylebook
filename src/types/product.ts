@@ -42,5 +42,5 @@ export interface CartItem {
   product: Product;
   selectedVariant: ProductVariant;
   quantity: number;
-  plan: PlanType;
+  plan?: PlanType;
 }

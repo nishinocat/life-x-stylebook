@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { X, Plus, Trash2, Upload } from 'lucide-react';
-import type { Product, ProductVariant } from '../../types/product';
+import { X, Plus, Trash2 } from 'lucide-react';
+import type { Product, ProductVariant, UnitType } from '../../types/product';
 import { Button } from '../common/Button';
 
 interface ProductFormNewProps {
@@ -173,7 +173,7 @@ export const ProductFormNew: React.FC<ProductFormNewProps> = ({
                   </label>
                   <select
                     value={formData.unit}
-                    onChange={(e) => setFormData({ ...formData, unit: e.target.value })}
+                    onChange={(e) => setFormData({ ...formData, unit: e.target.value as UnitType })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <option value="個">個</option>

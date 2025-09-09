@@ -20,7 +20,7 @@ export const ConfirmOrderModal: React.FC<ConfirmOrderModalProps> = ({
   const [customerEmail, setCustomerEmail] = useState('');
   const [isConfirmed, setIsConfirmed] = useState(false);
   
-  const { items, getTotalPrice, clearCart, selectedPlan } = useCartStore();
+  const { items, getTotalPrice, clearCart } = useCartStore();
   const addNotification = useNotificationStore((state) => state.addNotification);
   const recordAdoption = useStatisticsStore((state) => state.recordAdoption);
   const totalPrice = getTotalPrice();
@@ -33,7 +33,7 @@ export const ConfirmOrderModal: React.FC<ConfirmOrderModalProps> = ({
     
     // 統計を記録
     items.forEach(item => {
-      const price = item.product.pricing.find(p => p.plan === selectedPlan)?.price || 0;
+      const price = item.product.pricing.find(p => p.planId === 'LACIE')?.price || 0;
       recordAdoption(
         item.product.id,
         item.product.name,

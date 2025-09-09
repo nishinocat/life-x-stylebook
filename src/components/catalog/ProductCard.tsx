@@ -3,7 +3,6 @@ import type { Product } from '../../types/product';
 import { Card } from '../common/Card';
 import { Badge } from '../common/Badge';
 import { formatPrice } from '../../lib/utils';
-import { useCartStore } from '../../stores/useCartStore';
 
 interface ProductCardProps {
   product: Product;

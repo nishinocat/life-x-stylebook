@@ -4,7 +4,7 @@ import 'jspdf-autotable';
 import type { CartItem } from '../types/product';
 
 // 日本語フォントの設定（実際のプロジェクトではフォントファイルを追加）
-const setupJapaneseFont = (pdf: jsPDF) => {
+const setupJapaneseFont = (_pdf: jsPDF) => {
   // フォントの設定が必要な場合はここで行う
   // 現状はデフォルトフォントを使用
 };

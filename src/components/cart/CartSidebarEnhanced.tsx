@@ -16,8 +16,6 @@ export const CartSidebarEnhanced: React.FC<CartSidebarEnhancedProps> = ({ isOpen
   const [isFinalized, setIsFinalized] = useState(false);
   const [customerName, setCustomerName] = useState('');
   const [projectName, setProjectName] = useState('');
-  const [showExportModal, setShowExportModal] = useState(false);
-  const [savedData, setSavedData] = useState<any>(null);
   
   const totalPrice = getTotalPrice();
 
@@ -30,7 +28,6 @@ export const CartSidebarEnhanced: React.FC<CartSidebarEnhancedProps> = ({ isOpen
       status: 'draft'
     };
     localStorage.setItem('lifex_draft_estimate', JSON.stringify(saveData));
-    setSavedData(saveData);
     alert('見積が一時保存されました');
   };
 

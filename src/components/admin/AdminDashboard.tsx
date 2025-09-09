@@ -327,7 +327,7 @@ export const AdminDashboard: React.FC = () => {
                 <div className="flex gap-2">
                   <Button 
                     variant="outline" 
-                    onClick={() => exportProductsToExcel(currentProducts, productCategory)}
+                    onClick={() => exportProductsToExcel(filteredProducts, productCategory)}
                     className="w-full sm:w-auto"
                   >
                     <FileText className="w-4 h-4 mr-1" />
@@ -335,7 +335,7 @@ export const AdminDashboard: React.FC = () => {
                   </Button>
                   <Button 
                     variant="outline" 
-                    onClick={() => exportProductsToCSV(currentProducts, productCategory)}
+                    onClick={() => exportProductsToCSV(filteredProducts, productCategory)}
                     className="w-full sm:w-auto"
                   >
                     <Download className="w-4 h-4 mr-1" />
