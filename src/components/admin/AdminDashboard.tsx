@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Plus, Edit, Trash2, BarChart3, Package, Bell, Search, TrendingUp } from 'lucide-react';
+import { Plus, Edit, Trash2, BarChart3, Package, Bell, Search, TrendingUp, FileText, Download } from 'lucide-react';
 import { Button } from '../common/Button';
 import { Card } from '../common/Card';
 import { ProductFormNew } from './ProductFormNew';
@@ -8,6 +8,7 @@ import { useOrderStore } from '../../stores/useOrderStore';
 import { useProductStore } from '../../stores/useProductStore';
 import { useStatisticsStore } from '../../stores/useStatisticsStore';
 import { formatPrice } from '../../lib/utils';
+import { exportProductsToExcel, exportProductsToCSV } from '../../utils/exportProducts';
 import type { Product } from '../../types/product';
 
 export const AdminDashboard: React.FC = () => {
@@ -323,11 +324,29 @@ export const AdminDashboard: React.FC = () => {
                     className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
-                <Button variant="primary" onClick={handleAddProduct} className="w-full sm:w-auto">
-                  <Plus className="w-4 h-4 mr-1 sm:mr-2" />
-                  <span className="hidden sm:inline">新規商品追加</span>
-                  <span className="sm:hidden">追加</span>
-                </Button>
+                <div className="flex gap-2">
+                  <Button 
+                    variant="outline" 
+                    onClick={() => exportProductsToExcel(currentProducts, productCategory)}
+                    className="w-full sm:w-auto"
+                  >
+                    <FileText className="w-4 h-4 mr-1" />
+                    <span className="hidden sm:inline">Excel</span>
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    onClick={() => exportProductsToCSV(currentProducts, productCategory)}
+                    className="w-full sm:w-auto"
+                  >
+                    <Download className="w-4 h-4 mr-1" />
+                    <span className="hidden sm:inline">CSV</span>
+                  </Button>
+                  <Button variant="primary" onClick={handleAddProduct} className="w-full sm:w-auto">
+                    <Plus className="w-4 h-4 mr-1 sm:mr-2" />
+                    <span className="hidden sm:inline">新規商品追加</span>
+                    <span className="sm:hidden">追加</span>
+                  </Button>
+                </div>
               </div>
             </div>
             

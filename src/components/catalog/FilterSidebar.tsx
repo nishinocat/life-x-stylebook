@@ -88,19 +88,6 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
       </div>
       
       <div className="space-y-6">
-        {/* プラン選択 */}
-        <div>
-          <h3 className="text-sm font-medium text-gray-700 mb-3">選択中のプラン</h3>
-          <div className="flex gap-2">
-            <Button variant="outline" size="sm" className="flex-1">
-              LACIE
-            </Button>
-            <Button variant="secondary" size="sm" className="flex-1">
-              HOURS
-            </Button>
-          </div>
-        </div>
-        
         {/* カテゴリフィルター */}
         <div>
           <h3 className="text-sm font-medium text-gray-700 mb-3">カテゴリ</h3>
